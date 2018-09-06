@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Validator.js</title>
+</head>
+<body>
+    <div>
+        姓名:<input id="txtName" type="text">
+    </div>
+    <div>
+        手機:<input id="txtPhone" type="tel">
+    </div>
+    <div>
+        電郵:<input id="txtEmail" type="text">
+    </div>
+    <div>
+        <input id="cbAgree" type="checkbox">我已同意使用條款
+    </div>
+    <input id="btnSubmit" type="button" value="submit">
+
+    <script src="js/Validator.js"></script>
+    <script>
+        let txtName = document.getElementById('txtName');
+        let txtPhone = document.getElementById('txtPhone');
+        let txtEmail = document.getElementById('txtEmail');
+        let cbAgree  = document.getElementById('cbAgree');
+        let btnSubmit = document.getElementById('btnSubmit');
+
+        btnSubmit.addEventListener('click', function(e) {
+            let validator = new Validator();
+
+            validator.add(txtName, [
+                {
+                    rule: 'require',
+                    errMsg: '請填寫姓名' 
+                },
+                {
+                    rule: 'minLength:3',
+                    errMsg: '姓名長度不可小於3位' 
+                },
+            ]);
+            validator.add(txtPhone, [
+                {
+                    rule: 'require',
+                    errMsg: '請填寫手機' 
+                },
+                {
+                    rule: 'mobile',
+                    errMsg: '請輸入正確手機格式 09開頭' 
+                },
+            ]);
+            validator.add(txtEmail, [
+                {
+                    rule: 'require',
+                    errMsg: '請填寫電郵' 
+                },
+                {
+                    rule: 'email',
+                    errMsg: '請輸入正確email格式 aa@bb.com' 
+                },
+            ]);
+            validator.add(cbAgree, [
+                {
+                    rule: 'checked',
+                    errMsg: '請先同意使用條款' 
+                }
+            ]);
+            let errMsgs = validator.start();
+            console.log(errMsgs);
+            if (errMsgs.length > 0) {
+                alert(errMsgs.join('\n'));
+            } else {
+                alert('pass');
+            }
+            
+        });
+    </script>
+</body>
+</html>
