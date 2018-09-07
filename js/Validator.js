@@ -1,6 +1,6 @@
 var Validator = (function() {
     function Validator() {
-        this.cache = [];
+        this.cache = {};
     }
 
     Validator.rules = {
@@ -31,30 +31,39 @@ var Validator = (function() {
         }
     };
 
-    Validator.prototype.add = function(dom, rules) {
-        console.log('add...');
-        // console.log(rules);
+    Validator.prototype.add = function(selector, rules) {        
+        var dom = document.querySelector(selector);
+        if (!dom) return;
+
+        this.cache[selector] = [];
+        
         rules.forEach(function(obj) {
             var ruleArr = obj.rule.split(':');
             var errMsg = obj.errMsg;
-            this.cache.push(function() {
-                var rule = ruleArr.shift();
-                ruleArr.unshift(dom);
-                ruleArr.push(errMsg);
+            var rule = ruleArr.shift();
+            ruleArr.unshift(dom);
+            ruleArr.push(errMsg);
+            // console.log(rule);
+            var fn = function() {
                 return Validator.rules[rule].apply(dom, ruleArr);
-            })
+            };
+            this.cache[selector].push(fn)
         }, this);
     };
 
     Validator.prototype.start = function() {
-        console.log('start...');
         this.errMsgs = [];
-        this.cache.forEach(function(validFunc) {
-            var errMsg = validFunc();
-            if (errMsg) {
-                this.errMsgs.push(errMsg);
-            } 
-        }, this);
+        for (var key in this.cache) {
+            if (this.cache.hasOwnProperty(key)) {
+                var validFuncArr = this.cache[key];
+                validFuncArr.forEach(function(validFunc) {
+                    var errMsg = validFunc();
+                    if (errMsg) {
+                        this.errMsgs.push(errMsg);
+                    } 
+                }, this);
+            }
+        }
         return this.errMsgs;
     };
 

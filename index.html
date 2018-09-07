@@ -23,16 +23,12 @@
 
     <script src="js/Validator.js"></script>
     <script>
-        let txtName = document.getElementById('txtName');
-        let txtPhone = document.getElementById('txtPhone');
-        let txtEmail = document.getElementById('txtEmail');
-        let cbAgree  = document.getElementById('cbAgree');
+
         let btnSubmit = document.getElementById('btnSubmit');
 
-        btnSubmit.addEventListener('click', function(e) {
+        function checkForm() {
             let validator = new Validator();
-
-            validator.add(txtName, [
+            validator.add('#txtName', [
                 {
                     rule: 'require',
                     errMsg: '請填寫姓名' 
@@ -42,7 +38,7 @@
                     errMsg: '姓名長度不可小於3位' 
                 },
             ]);
-            validator.add(txtPhone, [
+            validator.add('#txtPhone', [
                 {
                     rule: 'require',
                     errMsg: '請填寫手機' 
@@ -52,7 +48,7 @@
                     errMsg: '請輸入正確手機格式 09開頭' 
                 },
             ]);
-            validator.add(txtEmail, [
+            validator.add('#txtEmail', [
                 {
                     rule: 'require',
                     errMsg: '請填寫電郵' 
@@ -62,13 +58,19 @@
                     errMsg: '請輸入正確email格式 aa@bb.com' 
                 },
             ]);
-            validator.add(cbAgree, [
+            validator.add('#cbAgree', [
                 {
                     rule: 'checked',
                     errMsg: '請先同意使用條款' 
                 }
             ]);
+            console.log(validator.cache);
             let errMsgs = validator.start();
+            return errMsgs;
+        }
+
+        btnSubmit.addEventListener('click', function(e) {
+            let errMsgs = checkForm();
             console.log(errMsgs);
             if (errMsgs.length > 0) {
                 alert(errMsgs.join('\n'));
