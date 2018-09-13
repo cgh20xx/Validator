@@ -1,3 +1,8 @@
+/**
+ * Validator.js
+ * Author: Hank Hsiao
+ * Update: 2018.9.13
+ */
 var Validator = (function() {
     function Validator() {
         this.cache = {};
@@ -11,6 +16,11 @@ var Validator = (function() {
         },
         minLength: function(dom, length, errMsg) {
             if (dom.value.trim().length < length) {
+                return errMsg;
+            }
+        },
+        maxLength: function(dom, length, errMsg) {
+            if (dom.value.trim().length > length) {
                 return errMsg;
             }
         },
@@ -43,10 +53,7 @@ var Validator = (function() {
             var rule = ruleArr.shift();
             ruleArr.unshift(dom);
             ruleArr.push(errMsg);
-            // console.log(rule);
-            var fn = function() {
-                return Validator.rules[rule].apply(dom, ruleArr);
-            };
+            var fn = function() { return Validator.rules[rule].apply(dom, ruleArr) };
             this.cache[selector].push(fn)
         }, this);
     };
@@ -56,12 +63,13 @@ var Validator = (function() {
         for (var key in this.cache) {
             if (this.cache.hasOwnProperty(key)) {
                 var validFuncArr = this.cache[key];
-                validFuncArr.forEach(function(validFunc) {
+                for (var i = 0, validFunc; validFunc = validFuncArr[i++];) {
                     var errMsg = validFunc();
                     if (errMsg) {
                         this.errMsgs.push(errMsg);
+                        break;
                     } 
-                }, this);
+                }
             }
         }
         return this.errMsgs;

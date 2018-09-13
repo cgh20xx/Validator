@@ -23,7 +23,6 @@
 
     <script src="js/Validator.js"></script>
     <script>
-
         let btnSubmit = document.getElementById('btnSubmit');
 
         function checkForm() {
@@ -36,6 +35,10 @@
                 {
                     rule: 'minLength:3',
                     errMsg: '姓名長度不可小於3位' 
+                },
+                {
+                    rule: 'maxLength:10',
+                    errMsg: '姓名長度不可大於10位' 
                 },
             ]);
             validator.add('#txtPhone', [
@@ -51,33 +54,31 @@
             validator.add('#txtEmail', [
                 {
                     rule: 'require',
-                    errMsg: '請填寫電郵' 
+                    errMsg: '請填寫 email' 
                 },
                 {
                     rule: 'email',
-                    errMsg: '請輸入正確email格式 aa@bb.com' 
+                    errMsg: '請輸入正確 email 格式 aa@bb.com' 
                 },
             ]);
             validator.add('#cbAgree', [
                 {
                     rule: 'checked',
-                    errMsg: '請先同意使用條款' 
+                    errMsg: '請同意使用條款' 
                 }
             ]);
-            console.log(validator.cache);
+
             let errMsgs = validator.start();
             return errMsgs;
         }
 
         btnSubmit.addEventListener('click', function(e) {
             let errMsgs = checkForm();
-            console.log(errMsgs);
             if (errMsgs.length > 0) {
                 alert(errMsgs.join('\n'));
             } else {
                 alert('pass');
             }
-            
         });
     </script>
 </body>
