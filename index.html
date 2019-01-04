@@ -17,6 +17,9 @@
         電郵:<input id="txtEmail" type="text">
     </div>
     <div>
+        發票:<input id="txtInvoice" type="text">
+    </div>
+    <div>
         <input id="cbAgree" type="checkbox">我已同意使用條款
     </div>
     <input id="btnSubmit" type="button" value="submit">
@@ -59,6 +62,16 @@
                 {
                     rule: 'email',
                     errMsg: '請輸入正確 email 格式 aa@bb.com' 
+                },
+            ]);
+            validator.add('#txtInvoice', [
+                {
+                    rule: 'require',
+                    errMsg: '請填寫發票' 
+                },
+                {
+                    rule: 'invoice',
+                    errMsg: '請輸入正確發票格式 AB12345678' 
                 },
             ]);
             validator.add('#cbAgree', [

@@ -1,7 +1,7 @@
 /**
  * Validator.js
  * Author: Hank Hsiao
- * Update: 2018.9.13
+ * Update: 2019.1.4
  */
 var Validator = (function() {
     function Validator() {
@@ -31,6 +31,11 @@ var Validator = (function() {
         },
         email: function(dom, errMsg) {
             if (!/^[^\s]+@[^\s]+\.[^\s]{2,3}$/.test(dom.value)) {
+                return errMsg;
+            }
+        },
+        invoice: function(dom, errMsg) {
+            if (!/^[A-Z]{2}[0-9]{8}$/.test(dom.value)) {
                 return errMsg;
             }
         },
