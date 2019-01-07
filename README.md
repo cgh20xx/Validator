@@ -16,6 +16,12 @@ form validator
     電郵:<input id="txtEmail" type="text">
 </div>
 <div>
+    發票:<input id="txtInvoice" type="text">
+</div>
+<div>
+    身份証:<input id="txtId" type="text">
+</div>
+<div>
     <input id="cbAgree" type="checkbox">我已同意使用條款
 </div>
 <input id="btnSubmit" type="button" value="submit">
@@ -60,6 +66,26 @@ function checkForm() {
         {
             rule: 'email',
             errMsg: '請輸入正確 email 格式 aa@bb.com' 
+        },
+    ]);
+    validator.add('#txtInvoice', [
+        {
+            rule: 'require',
+            errMsg: '請填寫發票' 
+        },
+        {
+            rule: 'invoice',
+            errMsg: '請輸入正確發票格式 AB12345678' 
+        },
+    ]);
+    validator.add('#txtId', [
+        {
+            rule: 'require',
+            errMsg: '請填寫身份証' 
+        },
+        {
+            rule: 'twId',
+            errMsg: '請輸入正確身份証格式 A123456789' 
         },
     ]);
     validator.add('#cbAgree', [

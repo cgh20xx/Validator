@@ -39,6 +39,25 @@ var Validator = (function() {
                 return errMsg;
             }
         },
+        twId: function(dom, errMsg) {
+            var id = dom.value;
+            var tab = "ABCDEFGHJKLMNPQRSTUVXYWZIO";
+            var A1 = new Array (1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3);
+            var A2 = new Array (0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5);
+            var Mx = new Array (9,8,7,6,5,4,3,2,1,1);
+
+            if ( id.length != 10 ) return errMsg;
+            var i = tab.indexOf( id.charAt(0) );
+            if ( i == -1 ) return errMsg;
+            var sum = A1[i] + A2[i]*9;
+
+            for ( i=1; i<10; i++ ) {
+                var v = parseInt( id.charAt(i) );
+                if ( isNaN(v) ) return errMsg;
+                sum = sum + v * Mx[i];
+            }
+            if ( sum % 10 !== 0 ) return errMsg;
+        },
         checked: function(dom, errMsg) {
             if (!dom.checked) {
                 return errMsg
